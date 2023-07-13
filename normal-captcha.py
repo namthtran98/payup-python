@@ -1,22 +1,11 @@
-from twocaptcha import TwoCaptcha
-import sys
-from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from solveRecapcha import solveRecapcha
-from solveClickCapcha import solveClickCapcha
 from solveClickCapcha import giai_captcha
-from solveClickCapcha import take_image
 import time
-from selenium.webdriver.common.action_chains import ActionChains
-import pyautogui
-import re
 import requests
 import json
-from time import sleep
-import re
 import undetected_chromedriver as uc
 
 if __name__ == '__main__':
@@ -27,7 +16,7 @@ if __name__ == '__main__':
     browser.get('https://payup.video/signin/')
     txtboxUsername = browser.find_element(
         By.CSS_SELECTOR, "input[placeholder='Enter your email']")
-    txtboxUsername.send_keys("awsnamtran01@gmail.com")
+    txtboxUsername.send_keys("awsnamtran02@gmail.com")
     txtboxPassword = browser.find_element(
         By.CSS_SELECTOR, "input[placeholder='Set your password']")
     txtboxPassword.send_keys("Sinhnam1998")
@@ -78,10 +67,10 @@ if __name__ == '__main__':
             browser.switch_to.default_content()
             spanTimer = browser.find_element(By.CSS_SELECTOR, "#timer")
             timeSleep = int(spanTimer.text)
-            time.sleep(timeSleep + 6)
-        WebDriverWait(browser, 20).until(
-            EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
-        element = browser.find_element(By.CSS_SELECTOR, "#captcha")
+            time.sleep(timeSleep + 3)
+            WebDriverWait(browser, 20).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
+            element = browser.find_element(By.CSS_SELECTOR, "#captcha")
         if element.is_displayed():
             headers = {
                 'authority': 'payup.video',
@@ -135,7 +124,7 @@ if __name__ == '__main__':
             if response2.status_code == 200:
                 rs_load = response2.json()
                 co_captcha_khong = rs_load['status']
-                if "OK" == co_captcha_khong:
+                if "ok" == co_captcha_khong:
                     print('dinh captcha')
                     body = rs_load['data']
                     g = giai_captcha(apikey=apikey, body=body,
@@ -171,12 +160,5 @@ if __name__ == '__main__':
                         'https://payup.video/captcha/control/check.php', headers=headers, data=data)
 
                     print(response3)
-
-            # action = ActionChains(browser)
-            # action.move_to_element_with_offset(
-            #    element, float[coordinates[0]], float(coordinates[1])).click().perform()
-            # print(result['code'])
-            # print(element.location)
             time.sleep(5)
-        # wpyautogui.hotkey("command", "w", interval=0.5)
         browser.close()
