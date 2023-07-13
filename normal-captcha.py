@@ -135,7 +135,7 @@ if __name__ == '__main__':
             if response2.status_code == 200:
                 rs_load = response2.json()
                 co_captcha_khong = rs_load['status']
-            if "OK" == co_captcha_khong:
+                if "OK" == co_captcha_khong:
                     print('dinh captcha')
                     body = rs_load['data']
                     g = giai_captcha(apikey=apikey, body=body,
