@@ -108,6 +108,7 @@ if __name__ == '__main__':
             response_dict = json.loads(response)
             data3 = response_dict['data']
             s_id = response_dict['data']['s_id']
+            id = response_dict['data']['id']
             headers2 = {
                 'authority': 'payup.video',
                 'accept': 'application/json, text/javascript, */*; q=0.01',
@@ -126,14 +127,15 @@ if __name__ == '__main__':
 
             data2 = {
                 's_id': s_id,
+                'id': id
             }
 
             response2 = requests.post(
                 'https://payup.video/captcha/control/get.php', headers=headers2, data=data2)
             if response2.status_code == 200:
                 rs_load = response2.json()
-                co_captcha_khong = rs_load['access']
-                if False == co_captcha_khong:
+                co_captcha_khong = rs_load['status']
+            if "OK" == co_captcha_khong:
                     print('dinh captcha')
                     body = rs_load['data']
                     g = giai_captcha(apikey=apikey, body=body,
