@@ -58,16 +58,22 @@ if __name__ == '__main__':
             time.sleep(10)
             window_after = browser.window_handles[1]
             browser.switch_to.window(window_after)
-
-            browser._switch_to.frame(browser.find_element(
-                By.XPATH, "//iframe"))
+            try:
+                iframe = browser.find_element(By.XPATH, "//iframe")
+            except:
+                browser.refresh()
+                WebDriverWait(browser, 30).until(
+                    EC.presence_of_element_located((By.XPATH, "//iframe")))
+                iframe = browser.find_element(By.XPATH, "//iframe")
+            browser._switch_to.frame(iframe)
             btnPlay = browser.find_element(
                 By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
             btnPlay.click()
             browser.switch_to.default_content()
             spanTimer = browser.find_element(By.CSS_SELECTOR, "#timer")
             timeSleep = int(spanTimer.text)
-            time.sleep(timeSleep + 3)
+            WebDriverWait(browser, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//div[@class='status-bar-text']//span")))
             WebDriverWait(browser, 20).until(
                 EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
             element = browser.find_element(By.CSS_SELECTOR, "#captcha")
