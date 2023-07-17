@@ -61,10 +61,15 @@ if __name__ == '__main__':
             try:
                 iframe = browser.find_element(By.XPATH, "//iframe")
             except:
-                browser.refresh()
-                WebDriverWait(browser, 30).until(
-                    EC.presence_of_element_located((By.XPATH, "//iframe")))
-                iframe = browser.find_element(By.XPATH, "//iframe")
+                browser.close()
+                browser.switch_to.window(window_before)
+                btnviewVideo[0].click()
+                time.sleep(10)
+                window_after = browser.window_handles[1]
+                browser.switch_to.window(window_after)
+            WebDriverWait(browser, 30).until(
+                EC.presence_of_element_located((By.XPATH, "//iframe")))
+            iframe = browser.find_element(By.XPATH, "//iframe")
             browser._switch_to.frame(iframe)
             btnPlay = browser.find_element(
                 By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
