@@ -72,11 +72,16 @@ if __name__ == '__main__':
             browser.switch_to.default_content()
             spanTimer = browser.find_element(By.CSS_SELECTOR, "#timer")
             timeSleep = int(spanTimer.text)
-            WebDriverWait(browser, 30).until(
-                EC.presence_of_element_located((By.XPATH, "//div[@class='status-bar-text']//span")))
-            WebDriverWait(browser, 20).until(
-                EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
-            element = browser.find_element(By.CSS_SELECTOR, "#captcha")
+            try:
+                WebDriverWait(browser, 30).until(
+                    EC.presence_of_element_located((By.XPATH, "//div[@class='status-bar-text']//span")))
+                WebDriverWait(browser, 20).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
+                element = browser.find_element(By.CSS_SELECTOR, "#captcha")
+            except:
+                WebDriverWait(browser, 20).until(
+                    EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
+                element = browser.find_element(By.CSS_SELECTOR, "#captcha")
         if element.is_displayed():
             headers = {
                 'authority': 'payup.video',
