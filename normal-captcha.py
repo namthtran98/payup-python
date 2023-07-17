@@ -63,6 +63,8 @@ if __name__ == '__main__':
             except:
                 browser.close()
                 browser.switch_to.window(window_before)
+                browser.execute_script("arguments[0].click();", tabEarning)
+                time.sleep(15)
                 btnviewVideo[0].click()
                 time.sleep(10)
                 window_after = browser.window_handles[1]
