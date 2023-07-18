@@ -2,12 +2,8 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import solveRecapcha
-from solveClickCapcha import giai_captcha
-from CheckJob import CheckJob
 from SolvePayupCaptcha import SolvePayupCaptcha
 import time
-import requests
-import json
 import undetected_chromedriver as uc
 
 
@@ -31,17 +27,20 @@ if __name__ == '__main__':
 
     browser.execute_script(
         "document.getElementById('g-recaptcha-response').innerHTML = " + "'" + result + "'")
-
+    WebDriverWait(browser, 30).until(
+        EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']")))
     btnSignUp = browser.find_element(By.CSS_SELECTOR, "button[type='submit']")
     browser.execute_script("arguments[0].click();", btnSignUp)
-    time.sleep(10)
+    WebDriverWait(browser, 30).until(
+        EC.visibility_of_element_located((By.CSS_SELECTOR, ".btn.btn-light-success.bg-transparent.px-0.d-flex.align-items-center.font-weight-bolder")))
     while True:
         window_before = browser.window_handles[0]
         browser.switch_to.window(window_before)
         tabEarning = browser.find_element(
             By.CSS_SELECTOR, ".btn.btn-light-success.bg-transparent.px-0.d-flex.align-items-center.font-weight-bolder")
         browser.execute_script("arguments[0].click();", tabEarning)
-        time.sleep(15)
+        WebDriverWait(browser, 15).until(
+            EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
         curLimit = int(browser.find_element(By.CSS_SELECTOR, "#curLimit").text)
         allLimit = int(browser.find_element(By.CSS_SELECTOR, "#allLimit").text)
         if curLimit > 0 or allLimit > 0:
@@ -58,18 +57,21 @@ if __name__ == '__main__':
         btnviewVideo = browser.find_elements(By.CSS_SELECTOR, "#btn_card_run")
         if btnviewVideo:
             btnviewVideo[0].click()
-            time.sleep(10)
             window_after = browser.window_handles[1]
             browser.switch_to.window(window_after)
             try:
+                WebDriverWait(browser, 15).until(
+                    EC.visibility_of_element_located((By.XPATH, "//iframe")))
                 iframe = browser.find_element(By.XPATH, "//iframe")
             except:
                 browser.close()
                 browser.switch_to.window(window_before)
                 browser.execute_script("arguments[0].click();", tabEarning)
-                time.sleep(15)
+                WebDriverWait(browser, 15).until(
+                    EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
                 btnviewVideo[0].click()
-                time.sleep(10)
+                WebDriverWait(browser, 15).until(
+                    EC.visibility_of_element_located((By.XPATH, "//iframe")))
                 window_after = browser.window_handles[1]
                 browser.switch_to.window(window_after)
             WebDriverWait(browser, 30).until(
@@ -80,8 +82,10 @@ if __name__ == '__main__':
                 By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
             btnPlay.click()
             browser.switch_to.default_content()
+            spanTimer = browser.find_element(By.CSS_SELECTOR, "#timer")
+            timeSleep = int(spanTimer.text)
             try:
-                WebDriverWait(browser, 30).until(
+                WebDriverWait(browser, timeSleep + 5).until(
                     EC.presence_of_element_located((By.XPATH, "//div[@class='status-bar-text']//span")))
                 WebDriverWait(browser, 20).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
