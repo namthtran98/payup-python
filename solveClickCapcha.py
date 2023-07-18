@@ -6,20 +6,6 @@ from time import sleep
 import re
 
 
-def solveClickCapcha():
-    api_key = os.getenv('APIKEY_2CAPTCHA', '9eb41b119c979f57c678ff410eb14d1d')
-
-    solver = TwoCaptcha(api_key, defaultTimeout=120, pollingInterval=5)
-
-    try:
-        result = solver.coordinates('captchas/captcha.png', lang='en')
-    except Exception as e:
-        print(e)
-
-    else:
-        return result
-
-
 def giai_captcha(apikey, body, s_id, headers2):
     apikey = apikey
     body = body
