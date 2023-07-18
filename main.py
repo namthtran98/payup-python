@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-from solveRecapcha import solveRecapcha
+import solveRecapcha
 from solveClickCapcha import giai_captcha
 from CheckJob import CheckJob
 from SolvePayupCaptcha import SolvePayupCaptcha
@@ -23,18 +23,14 @@ if __name__ == '__main__':
     txtboxPassword = browser.find_element(
         By.CSS_SELECTOR, "input[placeholder='Set your password']")
     txtboxPassword.send_keys("Sinhnam1998")
-    # recaptcha
-    result = solveRecapcha(
-        "6LccP4klAAAAAOZUvkGg5n_nam1GMaege6EJDGf4",
-        "https://payup.video/signin/"
-    )
-    code = result['code']
+    result = solveRecapcha.TGSolveCaptcha(
+        "6LccP4klAAAAAOZUvkGg5n_nam1GMaege6EJDGf4", "https://payup.video/signin/", apikey)
     WebDriverWait(browser, 10).until(
         EC.presence_of_element_located((By.ID, 'g-recaptcha-response'))
     )
 
     browser.execute_script(
-        "document.getElementById('g-recaptcha-response').innerHTML = " + "'" + code + "'")
+        "document.getElementById('g-recaptcha-response').innerHTML = " + "'" + result + "'")
 
     btnSignUp = browser.find_element(By.CSS_SELECTOR, "button[type='submit']")
     browser.execute_script("arguments[0].click();", btnSignUp)
@@ -84,8 +80,6 @@ if __name__ == '__main__':
                 By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
             btnPlay.click()
             browser.switch_to.default_content()
-            spanTimer = browser.find_element(By.CSS_SELECTOR, "#timer")
-            timeSleep = int(spanTimer.text)
             try:
                 WebDriverWait(browser, 30).until(
                     EC.presence_of_element_located((By.XPATH, "//div[@class='status-bar-text']//span")))
