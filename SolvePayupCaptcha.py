@@ -93,4 +93,3 @@ def SolvePayupCaptcha(us, apikey, cookie):
                 'https://payup.video/captcha/control/check.php', headers=headers, data=data)
 
             print(response3)
-    time.sleep(5)
