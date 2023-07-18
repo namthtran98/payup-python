@@ -53,6 +53,7 @@ if __name__ == '__main__':
                 cookies_dict["_ym_visorc"] + "; " + "hash=" + cookies_dict["hash"] + \
                 "; " + "_ga_5JGWQMNX26=" + cookies_dict["_ga_5JGWQMNX26"]
         elif curLimit == 0 and allLimit == 0:
+            time.sleep(3600000)
             continue
         btnviewVideo = browser.find_elements(By.CSS_SELECTOR, "#btn_card_run")
         if btnviewVideo:
