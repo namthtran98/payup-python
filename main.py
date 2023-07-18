@@ -28,7 +28,7 @@ if __name__ == '__main__':
     browser.execute_script(
         "document.getElementById('g-recaptcha-response').innerHTML = " + "'" + result + "'")
     WebDriverWait(browser, 30).until(
-        EC.element_to_be_clickable((By.CSS_SELECTOR, "button[type='submit']")))
+        EC.presence_of_element_located((By.XPATH, "//h2")))
     btnSignUp = browser.find_element(By.CSS_SELECTOR, "button[type='submit']")
     browser.execute_script("arguments[0].click();", btnSignUp)
     WebDriverWait(browser, 30).until(
