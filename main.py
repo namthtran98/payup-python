@@ -86,7 +86,7 @@ if __name__ == '__main__':
             spanTimer = browser.find_element(By.CSS_SELECTOR, "#timer")
             timeSleep = int(spanTimer.text)
             try:
-                WebDriverWait(browser, timeSleep + 5).until(
+                WebDriverWait(browser, timeSleep + 10).until(
                     EC.presence_of_element_located((By.XPATH, "//div[@class='status-bar-text']//span")))
                 WebDriverWait(browser, 20).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
