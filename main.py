@@ -15,10 +15,10 @@ if __name__ == '__main__':
     us = browser.execute_script("return navigator.userAgent;")
     txtboxUsername = browser.find_element(
         By.CSS_SELECTOR, "input[placeholder='Enter your email']")
-    txtboxUsername.send_keys("awsnamtran02@gmail.com")
+    txtboxUsername.send_keys("#")
     txtboxPassword = browser.find_element(
         By.CSS_SELECTOR, "input[placeholder='Set your password']")
-    txtboxPassword.send_keys("Sinhnam1998")
+    txtboxPassword.send_keys("#")
     result = solveRecapcha.TGSolveCaptcha(
         "6LccP4klAAAAAOZUvkGg5n_nam1GMaege6EJDGf4", "https://payup.video/signin/", apikey)
     WebDriverWait(browser, 10).until(
