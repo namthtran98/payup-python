@@ -22,7 +22,7 @@ def TGSolveCaptcha(siteKey, url, apikey):
             f"http://goodxevilpay.pp.ua/res.php?key={apikey}&action=get&id={id}")
         output = response.text
         if "|" not in output:
-            return "FAIL"
+            continue
         code = output.split("|")[1]
         status = output.split("|")[0]
         if status == "OK":
