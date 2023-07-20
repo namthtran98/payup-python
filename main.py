@@ -69,7 +69,7 @@ if __name__ == '__main__':
                 while i == False:
                     browser.close()
                     browser.switch_to.window(window_before)
-                    browser.execute_script("arguments[0].click();", tabEarning)
+                    tabEarning.click()
                     WebDriverWait(browser, 15).until(
                         EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
                     btnviewVideo[0].click()
