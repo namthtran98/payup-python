@@ -78,6 +78,8 @@ if __name__ == '__main__':
                     tabEarning.click()
                     WebDriverWait(browser, 15).until(
                         EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
+                    btnviewVideo = browser.find_elements(
+                        By.CSS_SELECTOR, "#btn_card_run")
                     btnviewVideo[0].click()
                     WebDriverWait(browser, 15).until(
                         EC.visibility_of_element_located((By.XPATH, "//iframe")))
