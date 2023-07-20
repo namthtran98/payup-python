@@ -11,7 +11,7 @@ def TGSolveCaptcha(siteKey, url, apikey):
             f"http://goodxevilpay.pp.ua/in.php?key={apikey}&pageurl={url}?level=middle&method=userrecaptcha&googlekey={siteKey}")
         outputGoogleKey = responseGetIdGooleKey.text
         if "|" not in outputGoogleKey:
-            return "FAIL"
+            continue
         id = outputGoogleKey.split("|")[1]
         statusGoogleKey = outputGoogleKey.split("|")[0]
         if statusGoogleKey == "OK":
