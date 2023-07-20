@@ -65,19 +65,25 @@ if __name__ == '__main__':
                     EC.visibility_of_element_located((By.XPATH, "//iframe")))
                 iframe = browser.find_element(By.XPATH, "//iframe")
             except:
-                browser.close()
-                browser.switch_to.window(window_before)
-                browser.execute_script("arguments[0].click();", tabEarning)
-                WebDriverWait(browser, 15).until(
-                    EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
-                btnviewVideo[0].click()
-                WebDriverWait(browser, 15).until(
-                    EC.visibility_of_element_located((By.XPATH, "//iframe")))
-                window_after = browser.window_handles[1]
-                browser.switch_to.window(window_after)
-            WebDriverWait(browser, 30).until(
-                EC.presence_of_element_located((By.XPATH, "//iframe")))
-            iframe = browser.find_element(By.XPATH, "//iframe")
+                i = False
+                while i == False:
+                    browser.close()
+                    browser.switch_to.window(window_before)
+                    browser.execute_script("arguments[0].click();", tabEarning)
+                    WebDriverWait(browser, 15).until(
+                        EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
+                    btnviewVideo[0].click()
+                    WebDriverWait(browser, 15).until(
+                        EC.visibility_of_element_located((By.XPATH, "//iframe")))
+                    window_after = browser.window_handles[1]
+                    browser.switch_to.window(window_after)
+                    try:
+                        WebDriverWait(browser, 30).until(
+                            EC.presence_of_element_located((By.XPATH, "//iframe")))
+                        iframe = browser.find_element(By.XPATH, "//iframe")
+                        i = True
+                    except:
+                        continue
             browser._switch_to.frame(iframe)
             btnPlay = browser.find_element(
                 By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
