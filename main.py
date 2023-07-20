@@ -64,11 +64,17 @@ if __name__ == '__main__':
                 WebDriverWait(browser, 15).until(
                     EC.visibility_of_element_located((By.XPATH, "//iframe")))
                 iframe = browser.find_element(By.XPATH, "//iframe")
+                browser._switch_to.frame(iframe)
+                btnPlay = browser.find_element(
+                    By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
+                btnPlay.click()
             except:
                 i = False
                 while i == False:
                     browser.close()
                     browser.switch_to.window(window_before)
+                    tabEarning = browser.find_element(
+                        By.CSS_SELECTOR, ".btn.btn-light-success.bg-transparent.px-0.d-flex.align-items-center.font-weight-bolder")
                     tabEarning.click()
                     WebDriverWait(browser, 15).until(
                         EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
@@ -81,13 +87,13 @@ if __name__ == '__main__':
                         WebDriverWait(browser, 30).until(
                             EC.presence_of_element_located((By.XPATH, "//iframe")))
                         iframe = browser.find_element(By.XPATH, "//iframe")
+                        browser._switch_to.frame(iframe)
+                        btnPlay = browser.find_element(
+                            By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
+                        btnPlay.click()
                         i = True
                     except:
                         continue
-            browser._switch_to.frame(iframe)
-            btnPlay = browser.find_element(
-                By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
-            btnPlay.click()
             browser.switch_to.default_content()
             spanTimer = browser.find_element(By.CSS_SELECTOR, "#timer")
             timeSleep = int(spanTimer.text)
