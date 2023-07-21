@@ -3,22 +3,26 @@ from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import solveRecapcha
 from SolvePayupCaptcha import SolvePayupCaptcha
+from ReadFile import ReadFile
 import time
 import undetected_chromedriver as uc
 
 
 if __name__ == '__main__':
-    apikey = "o8EPL80Zhhp0RX7eu4fcYkVxoL5nci42"
+    data = ReadFile()
+    username = data['username']
+    password = data['password']
+    apikey = data['apikey']
     browser = uc.Chrome()
     browser.maximize_window()
     browser.get('https://payup.video/signin/')
     us = browser.execute_script("return navigator.userAgent;")
     txtboxUsername = browser.find_element(
         By.CSS_SELECTOR, "input[placeholder='Enter your email']")
-    txtboxUsername.send_keys("#")
+    txtboxUsername.send_keys(username)
     txtboxPassword = browser.find_element(
         By.CSS_SELECTOR, "input[placeholder='Set your password']")
-    txtboxPassword.send_keys("#")
+    txtboxPassword.send_keys(password)
     result = solveRecapcha.TGSolveCaptcha(
         "6LccP4klAAAAAOZUvkGg5n_nam1GMaege6EJDGf4", "https://payup.video/signin/", apikey)
     WebDriverWait(browser, 10).until(
@@ -81,8 +85,6 @@ if __name__ == '__main__':
                     btnviewVideo = browser.find_elements(
                         By.CSS_SELECTOR, "#btn_card_run")
                     btnviewVideo[0].click()
-                    WebDriverWait(browser, 15).until(
-                        EC.visibility_of_element_located((By.XPATH, "//iframe")))
                     window_after = browser.window_handles[1]
                     browser.switch_to.window(window_after)
                     try:
