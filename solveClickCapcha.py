@@ -12,7 +12,8 @@ def giai_captcha(apikey, body, s_id, headers2):
     coordinates = take_image(apikey=apikey, body=body)
 
     if coordinates == "FAIL":
-        print("SEVER captcha loi hoac update")
+        # print("SEVER captcha loi hoac update")
+        giai_captcha(apikey=apikey, body=body, s_id=s_id, headers2=headers2)
     else:
         toa_do_x = coordinates[0]
         toa_do_y = coordinates[1]
