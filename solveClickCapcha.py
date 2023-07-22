@@ -10,14 +10,15 @@ def giai_captcha(apikey, body, s_id, headers2):
     apikey = apikey
     body = body
     coordinates = take_image(apikey=apikey, body=body)
-
+    toa_do_x = ''
+    toa_do_y = ''
     if coordinates == "FAIL":
-        # print("SEVER captcha loi hoac update")
+        print("SEVER captcha loi hoac update")
         giai_captcha(apikey=apikey, body=body, s_id=s_id, headers2=headers2)
     else:
         toa_do_x = coordinates[0]
         toa_do_y = coordinates[1]
-    print(toa_do_x, toa_do_y)
+        print(toa_do_x, toa_do_y)
     data_giai = {
         'x': toa_do_x,
         'y': toa_do_y,
