@@ -9,6 +9,7 @@ import undetected_chromedriver as uc
 
 
 if __name__ == '__main__':
+    timeWaitElement = 60
     data = ReadFile()
     username = data['username']
     password = data['password']
@@ -25,17 +26,17 @@ if __name__ == '__main__':
     txtboxPassword.send_keys(password)
     result = solveRecapcha.TGSolveCaptcha(
         "6LccP4klAAAAAOZUvkGg5n_nam1GMaege6EJDGf4", "https://payup.video/signin/", apikey)
-    WebDriverWait(browser, 10).until(
+    WebDriverWait(browser, timeWaitElement).until(
         EC.presence_of_element_located((By.ID, 'g-recaptcha-response'))
     )
 
     browser.execute_script(
         "document.getElementById('g-recaptcha-response').innerHTML = " + "'" + result + "'")
-    WebDriverWait(browser, 30).until(
+    WebDriverWait(browser, timeWaitElement).until(
         EC.presence_of_element_located((By.XPATH, "//h2")))
     btnSignUp = browser.find_element(By.CSS_SELECTOR, "button[type='submit']")
     browser.execute_script("arguments[0].click();", btnSignUp)
-    WebDriverWait(browser, 30).until(
+    WebDriverWait(browser, timeWaitElement).until(
         EC.visibility_of_element_located((By.CSS_SELECTOR, ".btn.btn-light-success.bg-transparent.px-0.d-flex.align-items-center.font-weight-bolder")))
     while True:
         window_before = browser.window_handles[0]
@@ -43,7 +44,7 @@ if __name__ == '__main__':
         tabEarning = browser.find_element(
             By.CSS_SELECTOR, ".btn.btn-light-success.bg-transparent.px-0.d-flex.align-items-center.font-weight-bolder")
         browser.execute_script("arguments[0].click();", tabEarning)
-        WebDriverWait(browser, 15).until(
+        WebDriverWait(browser, timeWaitElement).until(
             EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
         curLimit = int(browser.find_element(By.CSS_SELECTOR, "#curLimit").text)
         allLimit = int(browser.find_element(By.CSS_SELECTOR, "#allLimit").text)
@@ -65,7 +66,7 @@ if __name__ == '__main__':
             window_after = browser.window_handles[1]
             browser.switch_to.window(window_after)
             try:
-                WebDriverWait(browser, 15).until(
+                WebDriverWait(browser, timeWaitElement).until(
                     EC.visibility_of_element_located((By.XPATH, "//iframe")))
                 iframe = browser.find_element(By.XPATH, "//iframe")
                 browser._switch_to.frame(iframe)
@@ -80,7 +81,7 @@ if __name__ == '__main__':
                     tabEarning = browser.find_element(
                         By.CSS_SELECTOR, ".btn.btn-light-success.bg-transparent.px-0.d-flex.align-items-center.font-weight-bolder")
                     tabEarning.click()
-                    WebDriverWait(browser, 15).until(
+                    WebDriverWait(browser, timeWaitElement).until(
                         EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
                     btnviewVideo = browser.find_elements(
                         By.CSS_SELECTOR, "#btn_card_run")
@@ -88,7 +89,7 @@ if __name__ == '__main__':
                     window_after = browser.window_handles[1]
                     browser.switch_to.window(window_after)
                     try:
-                        WebDriverWait(browser, 30).until(
+                        WebDriverWait(browser, timeWaitElement).until(
                             EC.presence_of_element_located((By.XPATH, "//iframe")))
                         iframe = browser.find_element(By.XPATH, "//iframe")
                         browser._switch_to.frame(iframe)
@@ -104,11 +105,11 @@ if __name__ == '__main__':
             try:
                 WebDriverWait(browser, timeSleep + 10).until(
                     EC.presence_of_element_located((By.XPATH, "//div[@class='status-bar-text']//span")))
-                WebDriverWait(browser, 20).until(
+                WebDriverWait(browser, timeWaitElement).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
                 element = browser.find_element(By.CSS_SELECTOR, "#captcha")
             except:
-                WebDriverWait(browser, 20).until(
+                WebDriverWait(browser, timeWaitElement).until(
                     EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
                 element = browser.find_element(By.CSS_SELECTOR, "#captcha")
         if element.is_displayed():
