@@ -1,4 +1,4 @@
-from SolveClickCapcha import giai_captcha
+from solveClickCapcha import giai_captcha
 import requests
 import json
 import time
