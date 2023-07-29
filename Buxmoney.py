@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import undetected_chromedriver as uc
-import SolveRecapcha
+import SolveRecaptcha
 import time
 from SolveBuxMoneyCaptcha import SolveBuxMoneyCaptcha
 
@@ -16,7 +16,7 @@ def Buxmoney(browser: uc.Chrome, i, apikey, buxusername, buxpassword):
     username.send_keys(buxusername)
     password = browser.find_element(By.ID, "password")
     password.send_keys(buxpassword)
-    result = SolveRecapcha.TGSolveCaptcha(
+    result = SolveRecaptcha.TGSolveCaptcha(
         "6LeGu9wZAAAAAPrFSfn4hLNNxf0bCnLLLtfdIRo5", "https://bux.money/signin/", "o8EPL80Zhhp0RX7eu4fcYkVxoL5nci42")
     WebDriverWait(browser, timeWaitElement).until(
         EC.presence_of_element_located((By.ID, 'g-recaptcha-response'))

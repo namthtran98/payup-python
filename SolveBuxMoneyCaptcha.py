@@ -1,4 +1,4 @@
-from SolveClickCapcha import giai_buxmoney_captcha
+from SolveClickCaptcha import giai_buxmoney_captcha
 import requests
 import json
 import time
