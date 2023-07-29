@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import SolveRecapcha
+import solveRecapcha
 from SolvePayupCaptcha import SolvePayupCaptcha
 from ReadFile import ReadFile
 from Buxmoney import Buxmoney
@@ -27,7 +27,7 @@ if __name__ == '__main__':
     txtboxPassword = browser.find_element(
         By.CSS_SELECTOR, "input[placeholder='Set your password']")
     txtboxPassword.send_keys(password)
-    result = SolveRecapcha.TGSolveCaptcha(
+    result = solveRecapcha.TGSolveCaptcha(
         "6LccP4klAAAAAOZUvkGg5n_nam1GMaege6EJDGf4", "https://payup.video/signin/", apikey)
     WebDriverWait(browser, timeWaitElement).until(
         EC.presence_of_element_located((By.ID, 'g-recaptcha-response'))
