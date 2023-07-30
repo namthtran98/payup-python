@@ -1,13 +1,10 @@
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.wait import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-import SolveRecaptcha
-from SolvePayupCaptcha import SolvePayupCaptcha
 from ReadFile import ReadFile
 from Buxmoney import Buxmoney
+from Payup import Payup
 import time
 import undetected_chromedriver as uc
-
+from threading import Thread, Barrier
+import concurrent.futures
 
 if __name__ == '__main__':
     timeWaitElement = 60
@@ -17,107 +14,23 @@ if __name__ == '__main__':
     apikey = data['apikey']
     buxusername = data['buxusername']
     buxpassword = data['buxpassword']
-    browser = uc.Chrome()
-    browser.maximize_window()
-    browser.get('https://payup.video/signin/')
-    us = browser.execute_script("return navigator.userAgent;")
-    txtboxUsername = browser.find_element(
-        By.CSS_SELECTOR, "input[placeholder='Enter your email']")
-    txtboxUsername.send_keys(username)
-    txtboxPassword = browser.find_element(
-        By.CSS_SELECTOR, "input[placeholder='Set your password']")
-    txtboxPassword.send_keys(password)
-    result = SolveRecaptcha.TGSolveCaptcha(
-        "6LccP4klAAAAAOZUvkGg5n_nam1GMaege6EJDGf4", "https://payup.video/signin/", apikey)
-    WebDriverWait(browser, timeWaitElement).until(
-        EC.presence_of_element_located((By.ID, 'g-recaptcha-response'))
-    )
+    numero_multitareas = 2
+    barrier = Barrier(numero_multitareas)
+    # creating thread
+    t1 = Thread(target=Buxmoney(apikey=apikey,
+                                buxusername=buxusername, buxpassword=buxpassword), args=(barrier,))
+    t2 = Thread(target=Payup(
+        username=username, password=password, apikey=apikey), args=(barrier,))
 
-    browser.execute_script(
-        "document.getElementById('g-recaptcha-response').innerHTML = " + "'" + result + "'")
-    WebDriverWait(browser, timeWaitElement).until(
-        EC.presence_of_element_located((By.XPATH, "//h2")))
-    btnSignUp = browser.find_element(By.CSS_SELECTOR, "button[type='submit']")
-    browser.execute_script("arguments[0].click();", btnSignUp)
-    WebDriverWait(browser, timeWaitElement).until(
-        EC.visibility_of_element_located((By.CSS_SELECTOR, ".btn.btn-light-success.bg-transparent.px-0.d-flex.align-items-center.font-weight-bolder")))
-    i = True
-    while i == True:
-        window_before = browser.window_handles[0]
-        browser.switch_to.window(window_before)
-        tabEarning = browser.find_element(
-            By.CSS_SELECTOR, ".btn.btn-light-success.bg-transparent.px-0.d-flex.align-items-center.font-weight-bolder")
-        browser.execute_script("arguments[0].click();", tabEarning)
-        WebDriverWait(browser, timeWaitElement).until(
-            EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
-        curLimit = int(browser.find_element(By.CSS_SELECTOR, "#curLimit").text)
-        allLimit = int(browser.find_element(By.CSS_SELECTOR, "#allLimit").text)
-        if curLimit > 0 or allLimit > 0:
-            all_cookies = browser.get_cookies()
-            cookies_dict = {}
-            for cookie in all_cookies:
-                cookies_dict[cookie['name']] = cookie['value']
-            cookie1 = "_ga=" + cookies_dict['_ga'] + "; " + "_ym_d=" + cookies_dict['_ym_d'] + "; " + "_ym_uid=" + cookies_dict["_ym_uid"] + "; " + "newUser=1" + "; " + "PHPSESSID=" + cookies_dict["PHPSESSID"] + "; " + \
-                "signed=" + cookies_dict["signed"] + "; " + "_ym_isad=" + cookies_dict["_ym_isad"] + "; " + "_ym_visorc=" + \
-                cookies_dict["_ym_visorc"] + "; " + "hash=" + cookies_dict["hash"] + \
-                "; " + "_ga_5JGWQMNX26=" + cookies_dict["_ga_5JGWQMNX26"]
-        elif curLimit == 0 and allLimit == 0:
-            x = True
-            while x == True:
-                x = Buxmoney(browser, x, apikey, buxusername, buxpassword)
-            continue
-        btnviewVideo = browser.find_elements(By.CSS_SELECTOR, "#btn_card_run")
-        if btnviewVideo:
-            btnviewVideo[0].click()
-            window_after = browser.window_handles[1]
-            browser.switch_to.window(window_after)
-            try:
-                WebDriverWait(browser, timeWaitElement).until(
-                    EC.visibility_of_element_located((By.XPATH, "//iframe")))
-                iframe = browser.find_element(By.XPATH, "//iframe")
-                browser._switch_to.frame(iframe)
-                btnPlay = browser.find_element(
-                    By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
-                btnPlay.click()
-            except:
-                i = False
-                while i == False:
-                    browser.close()
-                    browser.switch_to.window(window_before)
-                    tabEarning = browser.find_element(
-                        By.CSS_SELECTOR, ".btn.btn-light-success.bg-transparent.px-0.d-flex.align-items-center.font-weight-bolder")
-                    tabEarning.click()
-                    WebDriverWait(browser, timeWaitElement).until(
-                        EC.visibility_of_element_located((By.CSS_SELECTOR, "#btn_card_run")))
-                    btnviewVideo = browser.find_elements(
-                        By.CSS_SELECTOR, "#btn_card_run")
-                    btnviewVideo[0].click()
-                    window_after = browser.window_handles[1]
-                    browser.switch_to.window(window_after)
-                    try:
-                        WebDriverWait(browser, timeWaitElement).until(
-                            EC.presence_of_element_located((By.XPATH, "//iframe")))
-                        iframe = browser.find_element(By.XPATH, "//iframe")
-                        browser._switch_to.frame(iframe)
-                        btnPlay = browser.find_element(
-                            By.XPATH, "//button[@class='ytp-large-play-button ytp-button ytp-large-play-button-red-bg']")
-                        btnPlay.click()
-                        i = True
-                    except:
-                        continue
-            browser.switch_to.default_content()
-            spanTimer = browser.find_element(By.CSS_SELECTOR, "#timer")
-            timeSleep = int(spanTimer.text)
-            try:
-                WebDriverWait(browser, timeSleep + 10).until(
-                    EC.presence_of_element_located((By.XPATH, "//div[@class='status-bar-text']//span")))
-                WebDriverWait(browser, timeWaitElement).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
-                element = browser.find_element(By.CSS_SELECTOR, "#captcha")
-            except:
-                WebDriverWait(browser, timeWaitElement).until(
-                    EC.presence_of_element_located((By.CSS_SELECTOR, '#captcha')))
-                element = browser.find_element(By.CSS_SELECTOR, "#captcha")
-        if element.is_displayed():
-            SolvePayupCaptcha(us, apikey, cookie1)
-        browser.close()
+    # starting thread 1
+    t1.start()
+    # starting thread 2
+    t2.start()
+
+    # wait until thread 1 is completely executed
+    t1.join()
+    # wait until thread 2 is completely executed
+    t2.join()
+
+    # both threads completely executed
+    print("Done!")

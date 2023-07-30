@@ -7,7 +7,8 @@ import time
 from SolveBuxMoneyCaptcha import SolveBuxMoneyCaptcha
 
 
-def Buxmoney(browser: uc.Chrome, i, apikey, buxusername, buxpassword):
+def Buxmoney(buxusername, buxpassword, apikey):
+    browser = uc.Chrome()
     timeWaitElement = 60
     browser.implicitly_wait(30)
     browser.get("https://bux.money/signin/")
@@ -44,10 +45,8 @@ def Buxmoney(browser: uc.Chrome, i, apikey, buxusername, buxpassword):
             By.CSS_SELECTOR, "#curLimit").text)
         allLimit = int(browser.find_element(By.CSS_SELECTOR, "#allLimit").text)
         if (curlLimit == 0 and allLimit == 0):
-            i = False
             x = False
         elif (curlLimit > 0 or allLimit > 0):
-            i = True
             all_cookies = browser.get_cookies()
             cookies_dict = {}
             for cookie in all_cookies:
@@ -115,4 +114,3 @@ def Buxmoney(browser: uc.Chrome, i, apikey, buxusername, buxpassword):
             if element.is_displayed():
                 SolveBuxMoneyCaptcha(us, apikey, cookie1)
         browser.close()
-    return i
