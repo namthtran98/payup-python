@@ -1,7 +1,7 @@
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
-import SolveRecapcha
+import SolveRecaptcha
 from SolvePayupCaptcha import SolvePayupCaptcha
 from ReadFile import ReadFile
 import time
@@ -9,8 +9,14 @@ import undetected_chromedriver as uc
 from Buxmoney import Buxmoney
 
 if __name__ == '__main__':
+    data = ReadFile()
+    username = data['username']
+    password = data['password']
+    apikey = data['apikey']
+    buxusername = data['buxusername']
+    buxpassword = data['buxpassword']
     browser = uc.Chrome()
     browser.maximize_window()
-    i = True
-    x = Buxmoney(browser=browser, i=i,
-                 apikey="o8EPL80Zhhp0RX7eu4fcYkVxoL5nci42")
+    x = True
+    while x == True:
+        x = Buxmoney(browser, x, apikey, buxusername, buxpassword)
